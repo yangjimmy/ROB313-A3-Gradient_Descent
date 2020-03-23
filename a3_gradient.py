@@ -14,6 +14,8 @@ def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter, SGD=False
     iters = np.array([])
     # "test" (validation) data losses
     losses_test = np.array([])
+    # testing accuracies
+    accuracies = np.array([])
 
     while num_iter>0:
         # find gradient gk
@@ -35,12 +37,14 @@ def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter, SGD=False
         # record loss
         losses = np.append(losses,f_thkp1)
         losses_test = np.append(losses_test, _f(x_test, y_test, thk))
+        y_pred_test = _sigmoid(thk, x_test)
+        accuracies = np.append(accuracies, _accuracy(y_test, y_pred_test))
         iters = np.append(iters, k)
         # calculate stopping condition
         k += 1
         num_iter -= 1
-    #return thk, losses, losses_test, iters
-    return thk, losses, losses_test, iters
+
+    return thk, losses, losses_test, accuracies, iters
 
 def _sigmoid (th, x):
     # print("in")
@@ -90,6 +94,14 @@ def _line_search(x, y, a_bar, gk, pk, thk, m1 = 1e-4, r=0.5):
         f_thk_apk = _f(x, y, thk + a * pk)
     return a
 
+def _accuracy(y,y_pred):
+    y_pred=np.rint(y_pred)
+    result = 0
+    for i in range(y_pred.shape[0]):
+        if y[i]==y_pred[i]:
+            result+=1
+    return result*1.0/y_pred.shape[0]
+
 def _plot2(x,y1,y2,legend1,legend2,x_label,y_label,title):
     line1,line2 = plt.plot(x,y1,x,y2)
     plt.legend((line1,line2),(legend1,legend2))
@@ -122,8 +134,11 @@ if __name__ == '__main__':
     # print(losses.shape)
     # print(losses_t.shape)
     # _plot2(iters, losses, losses_t, "Training loss", "Testing loss","Iteration #", "Loss", "Loss vs Iterations")
-    weights, losses, losses_t, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=0.01, num_iter=500, SGD=True)
+    weights, losses, losses_t, accuracies, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=0.01, num_iter=500, SGD=False)
     #print(losses)
     #plt.plot(iters, losses)
     _plot2(iters, losses, losses_t, "Training loss", "Testing loss", "Iteration #", "Loss", "Loss vs Iterations")
+    print(losses[losses.shape[0]-1])
+    print(losses_t[losses_t.shape[0]-1])
+    print(accuracies[accuracies.shape[0]-1])
     plt.show()
