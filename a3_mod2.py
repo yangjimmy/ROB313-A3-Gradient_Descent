@@ -19,56 +19,13 @@ def forward_pass(W1, W2, W3, b1, b2, b3, x):
     """
     H1 = np.maximum(0, np.dot(x, W1.T) + b1.T) # layer 1 neurons with ReLU activation, shape (N, M)
     H2 = np.maximum(0, np.dot(H1, W2.T) + b2.T) # layer 2 neurons with ReLU activation, shape (N, M)
-    # Fhat = np.dot(H2, W3.T) + b3.T # layer 3 (output) neurons with linear activation, shape (N, 10)
-
+    Fhat = np.dot(H2, W3.T) + b3.T # layer 3 (output) neurons with linear activation, shape (N, 10)
     # #######
     # Note that the activation function at the output layer is linear!
-    # You must impliment a stable log-softmax activation function at the output layer
+    # You must impliment a stable log-softmax activation function at the ouput layer
     # #######
-
-    # z = np.dot(H2, W3.T) + b3.T
-    # temp = np.exp(z)
-    # den = np.sum(temp)
-    # Fhat = temp/den
-    Fhat = _log_softmax(H2, W3, b3)
-    # print("layer 1")
-    # print(x.shape)
-    # print(W1.shape)
-    # print(b1.shape)
-    # print("layer 2")
-    # print(H1.shape)
-    # print(W2.shape)
-    # print(b2.shape)
-    # print("layer 3")
-    # print(H2.shape)
-    # print(W3.shape)
-    # print(b3.shape)
-
     return Fhat
 
-def _softmax(x,w,b):
-    z = np.dot(x, w.T) + b.T
-    temp = np.exp(z)
-    den = np.sum(temp)
-    return z/den
-
-def _log_softmax(x,w,b):
-    z = np.dot(x, w.T) + b.T
-    # print(z.shape)
-    temp = np.exp(z)
-    # print(temp)
-    den = np.sum(temp, axis=1)
-    #den[0] = 11
-    #print(den.shape)
-    #print(den)
-    den3 = np.reshape(den, (z.shape[0],1))
-    print(den3)
-    #print(den3.shape)
-    den2 = np.repeat(den3,10,axis=1)
-    print(den2.shape)
-    print(den2)
-    #return z-(np.log(den)*np.ones((z.shape[0],z.shape[1])))
-    return z-np.log(den2)
 
 def negative_log_likelihood(W1, W2, W3, b1, b2, b3, x, y):
     """
@@ -84,26 +41,8 @@ def negative_log_likelihood(W1, W2, W3, b1, b2, b3, x, y):
     # Note that this function assumes a Gaussian likelihood (with variance 1)
     # You must modify this function to consider a categorical (generalized Bernoulli) likelihood
     # ########
-    # NLL of Gaussian
-    # nll = 0.5*np.sum(np.square(Fhat - y)) + 0.5*y.size*np.log(2.*np.pi)
-    # print(nll)
-    # NLL of softmax
-
-    #print(Fhat)
-    #print(np.dot(y.T,np.log(Fhat)))
-    #temp_vector = np.array([])
-    #print(Fhat)
-    matrix = np.dot(Fhat, y.T)
-    # print(matrix.shape)
-    temp_vector = np.diag(matrix)
-    #for row in range(Fhat.shape[0]):
-        #print(y[row].shape)
-    #    temp_vector = np.append(temp_vector, np.dot(Fhat[row,:],y[row,:]))
-    # print(temp_vector.shape)
-    # temp = np.dot(np.log(Fhat),y.T)
-    # print(temp.shape)
-    # return -1.*np.sum(np.dot(np.log(Fhat),y.T))
-    return -1.*np.sum(temp_vector)
+    nll = 0.5*np.sum(np.square(Fhat - y)) + 0.5*y.size*np.log(2.*np.pi) 
+    return nll
     
 
 nll_gradients = value_and_grad(negative_log_likelihood, argnum=[0,1,2,3,4,5])
@@ -120,7 +59,7 @@ nll_gradients = value_and_grad(negative_log_likelihood, argnum=[0,1,2,3,4,5])
         b1_grad : (M, 1) gradient of the nll with respect to the biases of first (hidden) layer
         b2_grad : (M, 1) gradient of the nll with respect to the biases of second (hidden) layer
         b3_grad : (10, 1) gradient of the nll with respect to the biases of third (output) layer
- """
+     """
 
     
 def run_example():
@@ -131,10 +70,10 @@ def run_example():
     weights and biases to zero.
     """
     # load the MNIST_small dataset
+    from data_utils import load_dataset
     x_train, x_valid, x_test, y_train, y_valid, y_test = load_dataset('mnist_small')
     
     # initialize the weights and biases of the network
-    # initialize with zeroes
     M = 50 # 50 neurons per hidden layer
     W1 = np.zeros((M, 784)) # weights of first (hidden) layer
     W2 = np.zeros((M, M)) # weights of second (hidden) layer
@@ -145,14 +84,11 @@ def run_example():
     
     # considering the first 250 points in the training set, 
     # compute the negative log likelihood and its gradients
-
-    negative_log_likelihood(W1, W2, W3, b1, b2, b3, x_train[:250], y_train[:250])
     (nll, (W1_grad, W2_grad, W3_grad, b1_grad, b2_grad, b3_grad)) = \
         nll_gradients(W1, W2, W3, b1, b2, b3, x_train[:250], y_train[:250])
     print("negative log likelihood: %.5f" % nll)
-
-
-def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batch_size=250, learning_rate=0.01, num_iters=500):
+    
+def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batch_size=20, learning_rate=0.001, num_iters=500):
     """
 
     :param x_train:
@@ -203,6 +139,7 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
             nll_gradients(W1, W2, W3, b1, b2, b3, x_valid[:batch_size], y_valid[:batch_size])
         # loss_valid = negative_log_likelihood(W1, W2, W3, b1, b2, b3, x_valid, y_valid)
         losses_valid = np.append(losses_valid, nll2)
+
         # record iter number
         iters = np.append(iters, iter_count)
 
@@ -210,8 +147,7 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
     plt.plot(iters, losses_train)
     plt.show()
 
-
 if __name__ == '__main__':
-    run_example()
+    # run_example()
     x_train, x_valid, x_test, y_train, y_valid, y_test = load_dataset('mnist_small')
     sgd(x_train, y_train, x_valid, y_valid, x_test, y_test)

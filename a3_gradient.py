@@ -1,13 +1,11 @@
 from data_utils import load_dataset
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
-def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter, SGD=False):
+def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter=500, SGD=False):
     k = 0
     thk = th0 # weights
-    f_thk = float('-inf')
-    f_thkp1 = float('nan')
-
     # losses
     losses = np.array([])
     # iter
@@ -31,7 +29,6 @@ def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter, SGD=False
             f_pred = _sigmoid(thk, x_train)
             grad = _grad(x_train, y_train, f_pred)
         thk -= learning_rate*grad
-        print(thk)
         # evaluate f thk+1
         f_thkp1 = _f(x_train, y_train, thk)
         # record loss
@@ -46,15 +43,51 @@ def GD(x_train, y_train, x_test, y_test, th0, learning_rate, num_iter, SGD=False
 
     return thk, losses, losses_test, accuracies, iters
 
+
+def run_GD(x_train, y_train, x_test, y_test, lr_desired, num_iter, save=True):
+    for lr in lr_desired:
+        curr = time.time()
+        th0 = np.zeros((x_train.shape[1],1))
+        thk, losses, losses_test, accuracies, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=lr, num_iter = num_iter)
+        end = time.time()
+        plt.plot(losses, label="Learning rate {}".format(lr))
+        print("Time elapsed: {}".format(end - curr))
+        print("Full Batch GD Training loss: {}".format(losses[losses.shape[0] - 1]))
+        print("Full Batch GD Testing accuracy: {}, Loss: {}; learning rate = {}".format(accuracies[accuracies.shape[0]-1], losses_test[losses_test.shape[0]-1], lr))
+    plt.legend(loc="upper right")
+    plt.xlabel("Iteration #")
+    plt.ylabel("Negative Log Likelihood (Loss)")
+    plt.title("Full Batch GD Loss vs Iteration #")
+    if save:
+        plt.savefig("Full Batch GD.png")
+    plt.show()
+
+
+def run_SGD(x_train, y_train, x_test, y_test, lr_desired, num_iter, save=True):
+    for lr in lr_desired:
+        curr = time.time()
+        th0 = np.zeros((x_train.shape[1],1))
+        thk, losses, losses_test, accuracies, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=lr, num_iter = num_iter, SGD=True)
+        end = time.time()
+        plt.plot(losses, label="Learning rate {}".format(lr))
+        print("Time elapsed: {}".format(end-curr))
+        print("SGD Training loss: {}".format(losses[losses.shape[0]-1]))
+        print("SGD Testing accuracy: {}, Loss: {}; learning rate = {}".format(accuracies[accuracies.shape[0]-1], losses_test[losses_test.shape[0]-1],lr))
+    plt.legend(loc="upper right")
+    plt.xlabel("Iteration #")
+    plt.ylabel("Negative Log Likelihood (Loss)")
+    plt.title("SGD Loss vs Iteration #")
+    if save:
+        plt.savefig("SGD.png")
+    plt.show()
+
+
+
 def _sigmoid (th, x):
-    # print("in")
-    # 1/1+e^x
+    # 1/1+e^z
     exponent = np.dot(x,th)
-    #print(exponent.shape)
     den = np.ones((exponent.shape[0],1)) + np.exp(exponent)
-    #print(den.shape)
     result = 1./den
-    #print(result.shape)
     return result
 
 def _grad(x, y, f_pred):
@@ -64,23 +97,20 @@ def _f(x,y,th):
     fHat = _sigmoid(th, x)
     # NLL of Bernoulli
     first = np.vdot(y, (np.log(fHat)))
-    # print(first)
     temp1 = np.subtract(np.ones((y.shape[0], y.shape[1])),y)
-    #print(temp1.shape)
     temp2 = np.log(np.subtract(np.ones((fHat.shape[0], fHat.shape[1])),fHat))
     second = np.vdot(temp1, temp2)
-    # print(second)
     nll = first + second
     return -1.*nll
 
 def _rmse(y_pred, y_actual):
-    '''
+    """
     calculate the root mean squared error between the estimated y values and
-        the actual y values
-    param y_estimates: list of ints
-    param y_valid: list of ints, actual y values
-    return: float, rmse value between two lists
-    '''
+    the actual y values
+    :param y_estimates: list of ints
+    :param y_valid: list of ints, actual y values
+    :return: float, rmse value between two lists
+    """
     return np.sqrt(np.average(np.abs(y_pred-y_actual)**2))
 
 def _line_search(x, y, a_bar, gk, pk, thk, m1 = 1e-4, r=0.5):
@@ -130,15 +160,20 @@ if __name__ == '__main__':
     th0 = np.zeros((x_train.shape[1],1))
 
     # calculate weights
-    # weights, losses, losses_t, iters = GD(x_train, y_train, x_test, y_test, th0, eg=1e-3)
-    # print(losses.shape)
-    # print(losses_t.shape)
-    # _plot2(iters, losses, losses_t, "Training loss", "Testing loss","Iteration #", "Loss", "Loss vs Iterations")
-    weights, losses, losses_t, accuracies, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=0.01, num_iter=500, SGD=False)
-    #print(losses)
-    #plt.plot(iters, losses)
-    _plot2(iters, losses, losses_t, "Training loss", "Testing loss", "Iteration #", "Loss", "Loss vs Iterations")
-    print(losses[losses.shape[0]-1])
-    print(losses_t[losses_t.shape[0]-1])
-    print(accuracies[accuracies.shape[0]-1])
-    plt.show()
+    # weights, losses, losses_t, accuracies, iters = GD(x_train, y_train, x_test, y_test, th0, learning_rate=0.01, num_iter=500, SGD=False)
+    # plt.plot(losses)
+    #
+    # th0 = np.zeros((x_train.shape[1], 1))
+    # weights2, losses2, losses_t2, accuracies2, iters2 = GD(x_train, y_train, x_test, y_test, th0, learning_rate=0.001, num_iter=500, SGD=False)
+    # plt.plot(losses2)
+    #
+    # plt.show()
+    #_plot2(iters, losses, losses_t, "Training loss", "Testing loss", "Iteration #", "Loss", "Loss vs Iterations")
+    # print(losses[losses.shape[0]-1])
+    # print(losses_t[losses_t.shape[0]-1])
+    # print(accuracies[accuracies.shape[0]-1])
+    # plt.show()
+
+    lr_list = [0.01,0.001,0.0001]
+    run_GD(x_train, y_train, x_test, y_test, lr_list, 3000)
+    run_SGD(x_train, y_train, x_test, y_test, lr_list, 3000)
