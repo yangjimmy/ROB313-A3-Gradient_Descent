@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.21)  24 MAR 2020 12:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.21)  26 MAR 2020 22:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -446,6 +446,9 @@ Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
 )
 Package caption Info: wrapfig package is loaded.
 )
+(c:/texlive/2019/texmf-dist/tex/latex/tools/indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+)
 (c:/texlive/2019/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
@@ -513,23 +516,30 @@ File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count357
 \l__pdf_internal_box=\box69
 )
-(./Report.aux)
+(./Report.aux
+
+LaTeX Warning: Label `fig: SGD Multi LR 0.0001' multiply defined.
+
+
+LaTeX Warning: Label `fig: SGD Multi LR 0.0001@cref' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
  (c:/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count358
@@ -553,7 +563,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 
-Package layouts Warning: Layout scale set to 0.5 on input line 39.
+Package layouts Warning: Layout scale set to 0.5 on input line 40.
 
 \AtBeginShipoutBox=\box71
 (c:/texlive/2019/texmf-dist/tex/latex/pdflscape/pdflscape.sty
@@ -602,12 +612,12 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
 
 (c:/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
 
 
 (c:/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -616,229 +626,152 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {c:/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
 
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 49.
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 54.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 49.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 54.
 
 
-LaTeX Font Info:    Calculating math sizes for size <> on input line 50.
+LaTeX Font Info:    Calculating math sizes for size <> on input line 55.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.7> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.5> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 50.
+(Font)              size <5> substituted on input line 55.
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 52.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 57.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 52.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 57.
 
 
 
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 52.
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 57.
 
 
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 52.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 59.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 59.
-
-
-
-LaTeX Font Warning: Command \boldmath invalid in math mode on input line 62.
-
-
-LaTeX Font Warning: Command \mathversion invalid in math mode on input line 62.
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 57.
 
 
 
@@ -909,38 +842,147 @@ LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 64.
 
 
 LaTeX Font Warning: Command \mathversion invalid in math mode on input line 64.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 67.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 67.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \boldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
+
+
+
+LaTeX Font Warning: Command \unboldmath invalid in math mode on input line 69.
+
+
+LaTeX Font Warning: Command \mathversion invalid in math mode on input line 69.
 
 
 <Full Batch GD.png, id=8, 462.528pt x 346.896pt>
 File: Full Batch GD.png Graphic file (type png)
 <use Full Batch GD.png>
-Package pdftex.def Info: Full Batch GD.png  used on input line 71.
+Package pdftex.def Info: Full Batch GD.png  used on input line 76.
 (pdftex.def)             Requested size: 472.03123pt x 354.04095pt.
 [1]
 
 Package caption Warning: \captionsetup{type*=...} or \captionof
-(caption)                outside box or environment on input line 85.
+(caption)                outside box or environment on input line 90.
 See the caption package documentation for explanation.
 
-<SGD.png, id=23, 462.528pt x 346.896pt>
+[2 <./Full Batch GD.png>]
+<SGD.png, id=28, 462.528pt x 346.896pt>
 File: SGD.png Graphic file (type png)
 <use SGD.png>
-Package pdftex.def Info: SGD.png  used on input line 92.
+Package pdftex.def Info: SGD.png  used on input line 97.
 (pdftex.def)             Requested size: 472.03123pt x 354.04095pt.
-[2 <./Full Batch GD.png>] [3 <./SGD.png>] [4] (./Report.aux)
+ [3 <./SGD.png>]
+<Multiclass Classification Average Loss vs Iterations (Learning Rate 0.001).png
+, id=33, 462.528pt x 346.896pt>
+File: Multiclass Classification Average Loss vs Iterations (Learning Rate 0.001
+).png Graphic file (type png)
+<use Multiclass Classification Average Loss vs Iterations (Learning Rate 0.001)
+.png>
+Package pdftex.def Info: Multiclass Classification Average Loss vs Iterations (
+Learning Rate 0.001).png  used on input line 123.
+(pdftex.def)             Requested size: 472.03123pt x 354.04095pt.
+ [4]
+<Multiclass Classification Average Loss vs Iterations (Learning Rate 0.0001).pn
+g, id=37, 462.528pt x 346.896pt>
+File: Multiclass Classification Average Loss vs Iterations (Learning Rate 0.000
+1).png Graphic file (type png)
+<use Multiclass Classification Average Loss vs Iterations (Learning Rate 0.0001
+).png>
+Package pdftex.def Info: Multiclass Classification Average Loss vs Iterations (
+Learning Rate 0.0001).png  used on input line 129.
+(pdftex.def)             Requested size: 472.03123pt x 354.04095pt.
+ [5 <./Multiclass Classification Average Loss vs Iterations (Learning Rate 0.00
+1).png>]
+<Unconfident Inputs.png, id=42, 462.528pt x 346.896pt>
+File: Unconfident Inputs.png Graphic file (type png)
+<use Unconfident Inputs.png>
+Package pdftex.def Info: Unconfident Inputs.png  used on input line 147.
+(pdftex.def)             Requested size: 472.03123pt x 354.04095pt.
+ [6 <./Multiclass Classification Average Loss vs Iterations (Learning Rate 0.00
+01).png>] [7 <./Unconfident Inputs.png>] [8] (./Report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 4.5pt have occurred.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 11190 strings out of 480994
- 175211 string characters out of 5916047
- 456364 words of memory out of 5000000
- 26558 multiletter control sequences out of 15000+600000
- 542345 words of font info for 63 fonts, out of 8000000 for 9000
+ 11228 strings out of 480994
+ 176767 string characters out of 5916047
+ 458663 words of memory out of 5000000
+ 26587 multiletter control sequences out of 15000+600000
+ 543134 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,7n,42p,858b,295s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,7n,42p,1552b,295s stack positions out of 5000i,500n,10000p,200000b,80000s
 <c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/tex
 live/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2019
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2019/texmf-di
@@ -951,11 +993,14 @@ s/cm/cmr10.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12
 .pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/t
 exlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2019
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2019/texmf-di
-st/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on Report.pdf (5 pages, 195753 bytes).
+st/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2019/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2019/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msam10.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/a
+msfonts/symbols/msbm10.pfb>
+Output written on Report.pdf (9 pages, 297505 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 105 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

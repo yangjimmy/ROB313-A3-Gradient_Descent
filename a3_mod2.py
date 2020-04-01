@@ -147,7 +147,73 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
     plt.plot(iters, losses_train)
     plt.show()
 
+def sgd2(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batch_size=250, learning_rate=0.0001, num_iters=500):
+    """
+
+    :param x_train:
+    :param y_train:
+    :param x_valid:
+    :param y_valid:
+    :param x_test:
+    :param y_test:
+    :param layer_size:
+    :param batch_size:
+    :param learning_rate: learning rate for SGD
+    :param num_iters: number of iterations before stopping
+    :return:
+    """
+    #W1 = np.random.normal(0.0, 1.0, (layer_size, 784))
+    #W2 = np.random.normal(0.0, 1.0, (layer_size, layer_size))
+    #W3 = np.random.normal(0.0, 1.0, (10, layer_size))
+    scale = 0.1
+    W1 = scale*np.random.randn(layer_size, 784) / np.sqrt(784/2)
+    W2 = scale*np.random.randn(layer_size, layer_size) / np.sqrt(layer_size/2)
+    W3 = scale*np.random.randn(10, layer_size)
+    #W1 = np.zeros((layer_size, 784))  # weights of first (hidden) layer
+    #W2 = np.zeros((layer_size, layer_size))  # weights of second (hidden) layer
+    #W3 = np.zeros((10, layer_size))  # weights of third (output) layer
+    b1 = scale*np.zeros((layer_size, 1))  # biases of first (hidden) layer
+    b2 = scale*np.zeros((layer_size, 1))  # biases of second (hidden) layer
+    b3 = scale*np.zeros((10, 1))  # biases of third (output) layer
+
+    losses_train = np.array([])
+    losses_valid = np.array([])
+    iters = np.array([])
+
+    for iter in range(num_iters):
+        idxs = np.random.randint(x_train.shape[0], size=batch_size)
+        (nll, (W1_grad, W2_grad, W3_grad, b1_grad, b2_grad, b3_grad)) = \
+            nll_gradients(W1, W2, W3, b1, b2, b3, x_train[idxs,:], y_train[idxs,:])
+        print("negative log likelihood: %.5f" % nll)
+        # record training loss
+        losses_train = np.append(losses_train, nll)
+
+        # assume that gradients averaged already i.e. 1/|B|
+        W1 -= learning_rate*W1_grad
+        W2 -= learning_rate*W2_grad
+        W3 -= learning_rate*W3_grad
+        b1 -= learning_rate*b1_grad
+        b2 -= learning_rate*b2_grad
+        b3 -= learning_rate*b3_grad
+
+        idxs = np.random.randint(x_valid.shape[0], size=batch_size)
+        print(x_valid.shape)
+        # find validation loss
+        (nll2, (W1_grad2, W2_grad2, W3_grad2, b1_grad2, b2_grad2, b3_grad2)) = \
+            nll_gradients(W1, W2, W3, b1, b2, b3, x_valid[idxs,:], y_valid[idxs,:])
+        # loss_valid = negative_log_likelihood(W1, W2, W3, b1, b2, b3, x_valid, y_valid)
+        losses_valid = np.append(losses_valid, nll2)
+        # record iter number
+        iters = np.append(iters, iter)
+        nll=0
+        W1_grad, W2_grad, W3_grad, b1_grad, b2_grad, b3_grad = 0,0,0,0,0,0
+
+    plt.plot(losses_valid[10:], label="Validation")
+    plt.plot(losses_train[10:], label="Training")
+    plt.legend(loc="upper right")
+    plt.show()
+
 if __name__ == '__main__':
-    # run_example()
-    x_train, x_valid, x_test, y_train, y_valid, y_test = load_dataset('mnist_small')
-    sgd(x_train, y_train, x_valid, y_valid, x_test, y_test)
+    run_example()
+    #x_train, x_valid, x_test, y_train, y_valid, y_test = load_dataset('mnist_small')
+    #sgd2(x_train, y_train, x_valid, y_valid, x_test, y_test)

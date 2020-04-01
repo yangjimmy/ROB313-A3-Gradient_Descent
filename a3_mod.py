@@ -1,6 +1,7 @@
 import autograd.numpy as np
 from autograd import value_and_grad
 from data_utils import load_dataset
+from data_utils import plot_digit
 import matplotlib.pyplot as plt
 
 def forward_pass(W1, W2, W3, b1, b2, b3, x):
@@ -19,30 +20,7 @@ def forward_pass(W1, W2, W3, b1, b2, b3, x):
     """
     H1 = np.maximum(0, np.dot(x, W1.T) + b1.T) # layer 1 neurons with ReLU activation, shape (N, M)
     H2 = np.maximum(0, np.dot(H1, W2.T) + b2.T) # layer 2 neurons with ReLU activation, shape (N, M)
-    # Fhat = np.dot(H2, W3.T) + b3.T # layer 3 (output) neurons with linear activation, shape (N, 10)
-
-    # #######
-    # Note that the activation function at the output layer is linear!
-    # You must impliment a stable log-softmax activation function at the output layer
-    # #######
-
-    # z = np.dot(H2, W3.T) + b3.T
-    # temp = np.exp(z)
-    # den = np.sum(temp)
-    # Fhat = temp/den
     Fhat = _log_softmax(H2, W3, b3)
-    # print("layer 1")
-    # print(x.shape)
-    # print(W1.shape)
-    # print(b1.shape)
-    # print("layer 2")
-    # print(H1.shape)
-    # print(W2.shape)
-    # print(b2.shape)
-    # print("layer 3")
-    # print(H2.shape)
-    # print(W3.shape)
-    # print(b3.shape)
 
     return Fhat
 
@@ -54,21 +32,17 @@ def _softmax(x,w,b):
 
 def _log_softmax(x,w,b):
     z = np.dot(x, w.T) + b.T
-    # print(z.shape)
-    temp = np.exp(z)
-    # print(temp)
-    den = np.sum(temp, axis=1)
-    #den[0] = 11
-    #print(den.shape)
-    #print(den)
-    den3 = np.reshape(den, (z.shape[0],1))
-    print(den3)
-    #print(den3.shape)
-    den2 = np.repeat(den3,10,axis=1)
-    print(den2.shape)
-    print(den2)
-    #return z-(np.log(den)*np.ones((z.shape[0],z.shape[1])))
-    return z-np.log(den2)
+    # find max along axis
+    max_vals = np.amax(z, axis=1)
+    max_vals = np.reshape(max_vals, (x.shape[0],1))
+    # use log sum exp trick covered in class
+    max_vals_matrix = np.repeat(max_vals, 10, axis=1)
+    temp_matrix = np.exp(np.subtract(z,max_vals_matrix))
+    temp = np.sum(temp_matrix, axis=1)
+    temp2 = np.reshape(temp, (x.shape[0],1))
+    temp3 = np.repeat(temp2, 10, axis=1)
+    return np.subtract(z,(np.add(np.log(temp3),max_vals_matrix)))
+
 
 def negative_log_likelihood(W1, W2, W3, b1, b2, b3, x, y):
     """
@@ -88,23 +62,10 @@ def negative_log_likelihood(W1, W2, W3, b1, b2, b3, x, y):
     # nll = 0.5*np.sum(np.square(Fhat - y)) + 0.5*y.size*np.log(2.*np.pi)
     # print(nll)
     # NLL of softmax
-
-    #print(Fhat)
-    #print(np.dot(y.T,np.log(Fhat)))
-    #temp_vector = np.array([])
-    #print(Fhat)
     matrix = np.dot(Fhat, y.T)
-    # print(matrix.shape)
     temp_vector = np.diag(matrix)
-    #for row in range(Fhat.shape[0]):
-        #print(y[row].shape)
-    #    temp_vector = np.append(temp_vector, np.dot(Fhat[row,:],y[row,:]))
-    # print(temp_vector.shape)
-    # temp = np.dot(np.log(Fhat),y.T)
-    # print(temp.shape)
-    # return -1.*np.sum(np.dot(np.log(Fhat),y.T))
     return -1.*np.sum(temp_vector)
-    
+
 
 nll_gradients = value_and_grad(negative_log_likelihood, argnum=[0,1,2,3,4,5])
 """
@@ -122,6 +83,16 @@ nll_gradients = value_and_grad(negative_log_likelihood, argnum=[0,1,2,3,4,5])
         b3_grad : (10, 1) gradient of the nll with respect to the biases of third (output) layer
  """
 
+
+def _plot2(x,y1,y2,legend1,legend2,x_label,y_label,title, save=True):
+    line1,line2 = plt.plot(x,y1,x,y2)
+    plt.legend((line1,line2),(legend1,legend2))
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    if save:
+        plt.savefig("{}.png".format(title))
+    plt.show()
     
 def run_example():
     """
@@ -152,7 +123,7 @@ def run_example():
     print("negative log likelihood: %.5f" % nll)
 
 
-def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batch_size=250, learning_rate=0.01, num_iters=500):
+def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batch_size=250, learning_rate=0.001, num_iters=100, ud=5, save=True):
     """
 
     :param x_train:
@@ -167,11 +138,11 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
     :param num_iters: number of iterations before stopping
     :return:
     """
-    iter_count = 0
-
-    W1 = np.zeros((layer_size, 784))  # weights of first (hidden) layer
-    W2 = np.zeros((layer_size, layer_size))  # weights of second (hidden) layer
-    W3 = np.zeros((10, layer_size))  # weights of third (output) layer
+    np.random.seed(100)
+    scale = 1
+    W1 = scale*np.random.randn(layer_size, 784) / np.sqrt(784/2)
+    W2 = scale*np.random.randn(layer_size, layer_size) / np.sqrt(layer_size/2)
+    W3 = scale*np.random.randn(10, layer_size) / np.sqrt(layer_size)
     b1 = np.zeros((layer_size, 1))  # biases of first (hidden) layer
     b2 = np.zeros((layer_size, 1))  # biases of second (hidden) layer
     b3 = np.zeros((10, 1))  # biases of third (output) layer
@@ -180,15 +151,13 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
     losses_valid = np.array([])
     iters = np.array([])
 
-    while num_iters > 0:
-        iter_count += 1
-        num_iters -= 1
-
+    for iter in range(num_iters):
+        idxs = np.random.randint(x_train.shape[0], size=batch_size)
         (nll, (W1_grad, W2_grad, W3_grad, b1_grad, b2_grad, b3_grad)) = \
-            nll_gradients(W1, W2, W3, b1, b2, b3, x_train[:batch_size], y_train[:batch_size])
-        print("negative log likelihood: %.5f" % nll)
+            nll_gradients(W1, W2, W3, b1, b2, b3, x_train[idxs,:], y_train[idxs,:])
+        # print("negative log likelihood: %.5f" % nll)
         # record training loss
-        losses_train = np.append(losses_train, nll)
+        losses_train = np.append(losses_train, nll/batch_size)
 
         # assume that gradients averaged already i.e. 1/|B|
         W1 -= learning_rate*W1_grad
@@ -200,18 +169,47 @@ def sgd(x_train, y_train, x_valid, y_valid, x_test, y_test, layer_size=100, batc
 
         # find validation loss
         (nll2, (W1_grad2, W2_grad2, W3_grad2, b1_grad2, b2_grad2, b3_grad2)) = \
-            nll_gradients(W1, W2, W3, b1, b2, b3, x_valid[:batch_size], y_valid[:batch_size])
+            nll_gradients(W1, W2, W3, b1, b2, b3, x_valid, y_valid)
         # loss_valid = negative_log_likelihood(W1, W2, W3, b1, b2, b3, x_valid, y_valid)
-        losses_valid = np.append(losses_valid, nll2)
+        losses_valid = np.append(losses_valid, nll2/x_valid.shape[0])
         # record iter number
-        iters = np.append(iters, iter_count)
+        iters = np.append(iters, iter)
+        nll=0
+        W1_grad, W2_grad, W3_grad, b1_grad, b2_grad, b3_grad = 0,0,0,0,0,0
 
-    plt.plot(iters, losses_valid)
-    plt.plot(iters, losses_train)
+    (loss_test, (W1_grad2, W2_grad2, W3_grad2, b1_grad2, b2_grad2, b3_grad2)) = \
+        nll_gradients(W1, W2, W3, b1, b2, b3, x_test, y_test)
+    print("Average test loss: {}".format(loss_test/x_test.shape[0]))
+    print("Final average training loss: {}".format(losses_train[losses_train.shape[0]-1]))
+    print("Final average validation loss: {}".format(losses_valid[losses_valid.shape[0]-1]))
+
+    _plot2(iters, losses_valid, losses_train, "Validation", "Training", "Iteration #", "Average Loss", "Multiclass Classification Average Loss vs Iterations (Learning Rate {})".format(learning_rate), save)
+    x_vals = []
+    if ud != 0:
+        for i in range(x_test.shape[0]):
+            prob = np.max(np.exp(forward_pass(W1, W2, W3, b1, b2, b3, x_test[i])))
+            if prob<0.5:
+                # print("probability: {}".format(prob))
+                x_vals.append(x_test[i])
+                axis = plt.subplot(1, ud, len(x_vals))
+                axis.imshow(x_test[i].reshape((28, 28)), interpolation='none', aspect='equal', cmap='gray')
+            if len(x_vals)>=ud:
+                break
+    if save:
+        plt.savefig("{}.png".format("Unconfident Inputs"))
     plt.show()
 
 
+
 if __name__ == '__main__':
-    run_example()
+    # run_example()
     x_train, x_valid, x_test, y_train, y_valid, y_test = load_dataset('mnist_small')
-    sgd(x_train, y_train, x_valid, y_valid, x_test, y_test)
+
+    layer_size = 100 # size of hidden layers
+    batch_size = 250 # batch size during training
+    learning_rate = 0.0001 # learning rate
+    num_iters = 500 # number of iterations to perform
+    ud = 5 # number of Unconfident Data inputs to plot
+    save = True # whether to save final plots
+    sgd(x_train, y_train, x_valid, y_valid, x_test, y_test,layer_size=layer_size, batch_size=batch_size, learning_rate=learning_rate, num_iters=num_iters, ud=ud, save=save)
+

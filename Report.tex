@@ -22,6 +22,7 @@
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{float}
+\usepackage{indentfirst}
 
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -31,8 +32,8 @@
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \geometry{portrait, margin=2.5cm}
 	
-\title{ROB313 Report}
-\author{Zhengmin Yang}
+\title{Assignment 3: Gradient Descent Optimization}
+\author{Zhengmin Yang \\ University of Toronto}
 \date{\today}
 
 
@@ -40,6 +41,10 @@
 	\maketitle
 	
 	\section{Introduction}
+	\paragraph{Code Structure}
+	The code is divided into two parts in two separate files, \texttt{a3\_mod.py} and\\ \texttt{a3\_gradient.py}. The code is heavily modularized, with each calculation step of the respective algorithms performed by helper functions. \texttt{a3\_gradient.py} deals with the binary classification aspect of the assignment. The public methods \texttt{run\_GD} and \texttt{run\_SGD} are designed to be customized based the user's preferences, and allows the user to modify hyperparamters such as the learning rate and the number of iterations.\\
+	In \texttt{a3\_mod.py} the code design strategies are similar. It is also highly modularized, with a separate function for calling the log sigmoid as well as a function \texttt{sgd} for the user to call to train the neural network model and observe the results. It also allows the user to customize many options such as setting the learning rate, number of iterations, and whether to save the resulting images to disk for later use.
+	
 	\paragraph{Objectives}
 	In this report we will explore the application of gradient descent to modelling classification problems using machine learning. Both binary classification and multiclass classification will be considered. For binary classification, the prediction function is a sigmoid function (1) and the negative log likelihood, which is also the loss function, is given (2).
 	\begin{equation}
@@ -110,9 +115,55 @@
 	\subsubsection{Losses}
 	FGBD and SGD present similar losses for learning rates of 0.01 and 0.001, suggesting that SGD is a good estimator of FBGD while being less computationally expensive. In addition, as sjhown in class, the expected value of an SGD update is equivalent to an FBGD update, again confirming their similarities. They show different results for learning rate = 0.0001 because the SGD loss has not yet converged and did not show any sign of convergence. Thus SGD's training loss is much higher than FBGD's.
 	\subsection{Test Log Likelihood as a Metric}
-	The testing log likelihood could be a more suitable metric than test accuracy for measuring performance. This is because the signmoid gives a range of probabilities, which is then mapped to one class or another. The probabilities could be thought of as confidences in whether an input belongs to a certain class. However the testing accuracy loses this confidence information when it maps the outputs of the sigmoid onto a class. By using the log likelihood we are also able to determine whether the model its confidence in giving the correct output in addition to whether is really giving the correct output. 
+	The testing log likelihood could be a more suitable metric than test accuracy for measuring performance. This is because the signmoid gives a range of probabilities, which is then mapped to one class or another. The probabilities could be thought of as confidences in whether an input belongs to a certain class. However the testing accuracy loses this confidence information when it maps the outputs of the sigmoid onto a class. By using the log likelihood we are also able to determine whether the model its confidence in giving the correct output in addition to whether is really giving the correct output.
+	 
 	\section{Stochastic Gradient Descent for Multiclass Classification}
+	SGD can also be applied to train neural networks used in multiclass classification. Multiclass classification uses the softmax activation function (3) to predict the class of a input. The negative log likelihood in (4) is used to as a measure of loss of the model. In this case we are predicting the actual value of handwritten single digit numbers which are organized into 10 classes, one class for each digit. We are using the MINST dataset and splitting it into training, validation, and testing sets.\\ During each training iteration we are using a batch of 250 randomly chosen sets of inputs and outputs to determine the weight update. We then calculate the subsequent loss on the validation dataset to give us a more accurate picture of the model's loss given unseen real-world data. The model is validated over the entire validation set, and both the average training and validation losses are plotted for two separate learning rates, as shown below in Figures 3 and 4. \\ Note that we choose the average loss as it is more indicative of model performance rather than the total loss, which is dependent on the size of the dataset. The total loss adds up the losses of each point, meaning that it monotonically increases as the number of points in a batch increases.\\ The weights of the inputs to the hidden layers, which use the ReLU activation, were initialized according to guidelines set by He et al., and the weights of the inputs to the final softmax activation layer uses Xavier Activation. All biases were initialized to 0.
+	\begin{figure}[H]
+		\includegraphics[width=\linewidth]{Multiclass Classification Average Loss vs Iterations (Learning Rate 0.001).png}
+		\caption{Loss for Multiclass SGD Learning Rate 0.001 of $\eta$.}
+		\label{fig: SGD Multi LR 0.001}
+	\end{figure}
+
+	\begin{figure}[H]
+		\includegraphics[width=\linewidth]{Multiclass Classification Average Loss vs Iterations (Learning Rate 0.0001).png}
+		\caption{Loss for Multiclass SGD Learning Rate 0.0001 of $\eta$.}
+		\label{fig: SGD Multi LR 0.0001}
+	\end{figure}
+
+	Quantitative end results are listed below, and also includes the average loss on the test dataset. The average validation loss and testing loss values were taken at the last iteration.
 	
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		Learning Rate & Testing Loss     & Validation Loss & Training Loss \\ \hline
+		0.001          & 0.176            & 0.203         & 0.020          \\ \hline
+		0.0001         & 0.327            & 0.362         & 0.369          \\ \hline
+	\end{tabular}
+	\captionof{table}{Average Testing Loss, Validation Loss, and Training Loss for Different Learning Rates}\label{SGD Multi}
+	
+	As we can see, the model is not overfitting. This is observed by several factors. Firstly, the testing loss matches closely with the validation loss. In addition, the validation loss is converging at a minimal value and is not going up. This means that the model is able to generalize well to foreign datasets that it has not encountered before during training.
+	
+	\begin{figure}[H]
+		\includegraphics[width=\linewidth]{Unconfident Inputs.png}
+		\caption{Images with low model class prediction confidence}
+		\label{fig: SGD Multi LR 0.0001}
+	\end{figure}
+	
+	\subsection{Numerical Stability of Log Softmax}
+	The softmax function is composed of various exponential functions, which can grow very large. While modern computers have the ability to represent very small or very large numbers, there is the off chance that the number is so large it can overflow, causing an incorrect arithmetic result. Therefore, in order to prevent such cases of overflow, we use the log softmax in our implementation where we subtract each exponent term of each exponential by the largest value in the input vector, as shown in the following equation (6). 
+	
+	\begin{equation}
+	\log softmax(x_{j})= x_{j} - (a + \log \sum_{i=1}^{K}e^{x_{i}-a})
+	\end{equation}
+	
+	Where $a$ is the largest value in the input vector $\mathbf{x} \in \mathbb{R}^{K}$.
+	
+	This ensures that our result will not overflow while also aiding us in our ultimate goal of finding the log likelihood (4), where we would need to take the log of the softmax anyway.
+	
+	\subsection{Effect of Inputs on SGD Prediction Confidence}
+	The confidence of a class prediction of an input is also heavily affected by the types of inputs that it receives. Those that are more irregular than most other inputs are more difficult for the model to classify. As an example, the following five images all resulted in a model confidence of less than 50 percent.
+	
+	As we can see, the numbers are written irregularly and have more deviation from the "ideal" shape of the number that we would see on a digital screen, for example. Some are irregularly shaped while others are blurry and lack the distinguishing shape of a regular number. Without more complex features of a convolutional neural network that allow for location based feature extraction, it would be difficult for the regular neural network to classify these input images as strictly belonging to one class. The model is unsure of which class it belongs to which is why its prediction confidence is very low.
 	
 	
 \end{document}
